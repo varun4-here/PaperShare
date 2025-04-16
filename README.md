@@ -2,8 +2,8 @@
 
 **AI-powered tool (Flask, Python, Gemini) that analyzes arXiv abstracts via URL to instantly generate shareable summaries for LinkedIn, Twitter, and novice audiences. Simplifies research dissemination.**
 
-<!-- Add a GIF/Screenshot here showing the app in action! -->
-<!-- Example: ![PaperShare Demo](./docs/demo.gif) -->
+![image](https://github.com/user-attachments/assets/dc31ce60-4748-45c4-afcc-f4fca4c63127)
+
 
 ## The Problem
 
