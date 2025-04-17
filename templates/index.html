@@ -1,0 +1,232 @@
+<!-- START OF FILE papershare/templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PAPERSHARE · Research Content Generator</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📄</text></svg>">
+  <!-- External libraries first -->
+  <script src="https://unpkg.com/@phosphor-icons/web@2.0.3"></script>
+  <!-- Link to your external CSS file -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="light-theme"> <!-- Start with light theme class -->
+  <div class="container">
+    <header>
+      <a href="/" class="logo"> <!-- Make logo a link to home -->
+        <i class="ph ph-files logo-icon"></i>
+        PAPERSHARE
+      </a>
+      <div class="header-controls">
+        <div class="date-display">
+          <i class="ph ph-calendar-blank"></i>
+          <span id="current-date">Loading Date...</span>
+        </div>
+        <button
+          id="theme-toggle"
+          class="theme-toggle"
+          aria-label="Toggle theme"
+          title="Toggle theme"
+        >
+          <i class="ph ph-moon" id="theme-icon"></i>
+        </button>
+      </div>
+    </header>
+
+    <div class="content-wrapper">
+      <main>
+        <div class="paper-input">
+          <h2 class="form-title">
+            <i class="ph ph-file-magnifying-glass"></i>
+            Research Paper Analyzer
+          </h2>
+          <form id="paper-form" novalidate>
+            <div class="url-input-container">
+              <i class="ph ph-link url-input-icon"></i>
+              <input
+                type="url"
+                id="paper-url"
+                class="url-input"
+                placeholder="Enter arXiv Abstract URL (e.g., https://arxiv.org/abs/2403.10235)"
+                required
+                aria-label="arXiv Paper URL"
+              >
+            </div>
+            <button type="submit" class="submit-btn">
+              <i class="ph ph-paper-plane-tilt"></i>
+              Generate Content
+            </button>
+          </form>
+
+          <!-- Error Message Area -->
+          <div
+            id="error-message"
+            class="error-message"
+            role="alert"
+            style="display: none;"
+          >
+            <i class="ph ph-warning-circle"></i>
+            <span id="error-text">Error processing paper</span>
+          </div>
+
+          <!-- Loading Indicator -->
+          <div
+            id="loading-indicator"
+            class="loading-indicator"
+            aria-live="polite"
+          >
+            <div class="loading-spinner" aria-hidden="true"></div>
+            <span>Processing paper... Please wait</span>
+          </div>
+        </div>
+
+        <!-- Output Area -->
+        <div
+          id="output-container"
+          class="output-container"
+          style="display: none;"
+          aria-live="polite"
+        >
+          <div class="tab-nav" role="tablist">
+            <button
+              class="tab-btn active"
+              data-tab="linkedin"
+              role="tab"
+              aria-selected="true"
+              aria-controls="linkedin-tab"
+              id="linkedin-tab-button"
+            >
+              <i class="ph ph-linkedin-logo"></i>
+              LinkedIn
+            </button>
+            <button
+              class="tab-btn"
+              data-tab="twitter"
+              role="tab"
+              aria-selected="false"
+              aria-controls="twitter-tab"
+              id="twitter-tab-button"
+              tabindex="-1"
+            >
+              <i class="ph ph-twitter-logo"></i>
+              Twitter
+            </button>
+            <button
+              class="tab-btn"
+              data-tab="novice"
+              role="tab"
+              aria-selected="false"
+              aria-controls="novice-tab"
+              id="novice-tab-button"
+              tabindex="-1"
+            >
+              <i class="ph ph-student"></i>
+              Novice
+            </button>
+          </div>
+
+          <!-- LinkedIn Tab Panel -->
+          <div
+            class="tab-content active"
+            id="linkedin-tab"
+            role="tabpanel"
+            aria-labelledby="linkedin-tab-button"
+            tabindex="0"
+           >
+            <button class="copy-to-clipboard-btn" data-content="linkedin" title="Copy LinkedIn content">
+              <i class="ph ph-copy"></i>
+              <span class="copy-status-inline" id="linkedin-copy-status-inline"></span>
+            </button>
+            <div class="output-content" id="linkedin-content">LinkedIn content will appear here.</div>
+          </div>
+
+          <!-- Twitter Tab Panel -->
+          <div
+             class="tab-content"
+             id="twitter-tab"
+             role="tabpanel"
+             aria-labelledby="twitter-tab-button"
+             tabindex="0"
+             hidden
+           >
+            <button class="copy-to-clipboard-btn" data-content="twitter" title="Copy Twitter content">
+              <i class="ph ph-copy"></i>
+               <span class="copy-status-inline" id="twitter-copy-status-inline"></span>
+            </button>
+            <div class="output-content" id="twitter-content">Twitter content will appear here.</div>
+          </div>
+
+          <!-- Novice Tab Panel -->
+          <div
+            class="tab-content"
+            id="novice-tab"
+            role="tabpanel"
+            aria-labelledby="novice-tab-button"
+            tabindex="0"
+            hidden
+           >
+            <button class="copy-to-clipboard-btn" data-content="novice" title="Copy Novice Summary">
+              <i class="ph ph-copy"></i>
+               <span class="copy-status-inline" id="novice-copy-status-inline"></span>
+            </button>
+            <div class="output-content" id="novice-content">Novice explanation will appear here.</div>
+          </div>
+        </div>
+      </main>
+
+      <aside class="sidebar">
+        <div class="sidebar-widget">
+          <h3 class="widget-title">
+            <i class="ph ph-lightbulb"></i>
+            Insight
+          </h3>
+          <div class="quote-content">"The important thing is not to stop questioning. Curiosity has its own reason for existing."</div>
+          <div class="quote-author">Albert Einstein</div>
+        </div>
+
+        <div class="sidebar-widget">
+          <h3 class="widget-title">
+            <i class="ph ph-clock-counter-clockwise"></i>
+            Recent Papers
+          </h3>
+          <div id="history-placeholder" style="text-align: center; color: var(--text-secondary); font-style: italic;">Generate content to see history here.</div>
+          <ul class="history-list" id="history-list">
+             <!-- History items will be added here by JS -->
+          </ul>
+        </div>
+
+         <div class="sidebar-widget">
+          <h3 class="widget-title">
+            <i class="ph ph-info"></i>
+            About
+          </h3>
+          <p style="font-size: 0.9rem; color: var(--text-secondary);">
+              PAPERSHARE helps you quickly generate shareable summaries for arXiv research papers.
+              Paste an arXiv abstract URL and get content for LinkedIn, Twitter, and a novice-friendly explanation.
+          </p>
+        </div>
+      </aside>
+    </div>
+
+    <footer>
+      <div class="credits">
+        Made with <span class="credit-highlight">love</span> by Varunnn
+      </div>
+      <div>
+        © <span id="footer-year">2024</span> PAPERSHARE
+      </div>
+    </footer>
+  </div> <!-- end .container -->
+
+  <!-- Theme Change Notification -->
+  <div class="theme-notification" id="theme-notification">
+      <i class="ph ph-paint-brush"></i> Theme updated!
+  </div>
+
+  <!-- Link to your external JavaScript file -->
+  <!-- 'defer' ensures script runs after HTML is parsed -->
+  <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+</body>
+</html>
+<!-- END OF FILE papershare/templates/index.html -->
