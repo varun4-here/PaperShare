@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
         hideOutput();
 
         try {
-            const response = await fetch('/', { // Fetch from root path
+            const response = await fetch('/process', { // Fetch from root path
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ url: url }),
