@@ -13,7 +13,7 @@ from google.genai import types
 app = Flask(__name__)
 
 # --- Configuration ---
-GEMINI_API_KEY = "AIzaSyAuoDY7NIBFZ8fMBcmG7op4PBpFUEGh3L0"
+GEMINI_API_KEY = "ENTER YOUR OWN KEY< NOT MINE MATE"
 MODEL_ID = "gemini-3-flash-preview"
 
 logging.basicConfig(level=logging.INFO)
